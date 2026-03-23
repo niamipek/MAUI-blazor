@@ -1,0 +1,73 @@
+@page "/register"
+@layout Layout.AuthLayout
+@implements IDisposable
+@inject NavigationManager NavManager
+@inject AuthStateContainer AuthState
+
+<div class="auth-page">
+    <div class="brand-box">??</div>
+    <h1>T?o tài kho?n m?i</h1>
+    <p class="subtitle">B?t ??u hành trình c?a b?n v?i chúng tôi</p>
+
+    <div class="auth-card">
+        <div class="tabs">
+            <button class="tab" type="button" @onclick="GoLogin">??ng nh?p</button>
+            <button class="tab active" type="button">??ng ký</button>
+        </div>
+
+        <EditForm Model="AuthState.RegisterModel" OnValidSubmit="HandleRegisterAsync">
+            <DataAnnotationsValidator />
+
+            <label>H? và tên</label>
+            <InputText class="input" @bind-Value="AuthState.RegisterModel.FullName" placeholder="Nguy?n V?n A" />
+            <ValidationMessage For="() => AuthState.RegisterModel.FullName" class="validation" />
+
+            <label>Email</label>
+            <InputText class="input" @bind-Value="AuthState.RegisterModel.Email" placeholder="nam@example.com" />
+            <ValidationMessage For="() => AuthState.RegisterModel.Email" class="validation" />
+
+            <label>M?t kh?u</label>
+            <div class="password-wrap">
+                <InputText class="input" type="@(AuthState.ShowPassword ? "text" : "password")" @bind-Value="AuthState.RegisterModel.Password" placeholder="T?o m?t kh?u (ít nh?t 8 ký t?)" />
+                <button class="eye" type="button" @onclick="AuthState.TogglePassword">??</button>
+            </div>
+            <ValidationMessage For="() => AuthState.RegisterModel.Password" class="validation" />
+
+            <button class="primary-btn" type="submit" disabled="@AuthState.IsBusy">@(AuthState.IsBusy ? "?ang x? lý..." : "T?o Tài Kho?n")</button>
+        </EditForm>
+
+        <p class="policy">
+            B?ng vi?c ??ng ký, b?n ??ng ý v?i <span>?i?u kho?n</span> và <span>Chính sách b?o m?t</span> c?a chúng tôi.
+        </p>
+
+        @if (!string.IsNullOrWhiteSpace(AuthState.StatusMessage))
+        {
+            <p class="status @(AuthState.IsError ? "error" : "success")">@AuthState.StatusMessage</p>
+        }
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        AuthState.ClearStatus();
+        AuthState.OnChange += StateHasChanged;
+    }
+
+    private async Task HandleRegisterAsync()
+    {
+        await AuthState.RegisterAsync();
+
+        if (!AuthState.IsError)
+        {
+            NavManager.NavigateTo("/login");
+        }
+    }
+
+    private void GoLogin() => NavManager.NavigateTo("/login");
+
+    public void Dispose()
+    {
+        AuthState.OnChange -= StateHasChanged;
+    }
+}

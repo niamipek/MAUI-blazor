@@ -1,0 +1,74 @@
+﻿@page "/monkeys"
+@inject IApplication App
+@inject NavigationManager NavManager
+@inject MonkeyService monkeyService
+@inject IGeolocation geolocation
+
+<div>
+    <button class="button-yellow" @onclick="FindMonkey">Find Closest Monkey</button>
+
+    @if (monkeys is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <ul class="card-list">
+            @foreach (var monkey in monkeys)
+            {
+                <li @onclick="()=>GoToDetails(monkey)" class="card-item">
+                    <img class="card-image" src="@monkey.Image">
+                    <div class="card-content">
+                        <h2>@monkey.Name</h2>
+                        <p>@monkey.Location</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    private List<Monkey> monkeys = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        monkeys = await monkeyService.GetMonkeys();
+    }
+
+    private async Task FindMonkey()
+    {
+        try
+        {
+            var location = await geolocation.GetLastKnownLocationAsync();
+            if (location is null)
+            {
+                location = await geolocation.GetLocationAsync(new GeolocationRequest
+                    {
+                        DesiredAccuracy = GeolocationAccuracy.Medium,
+                        Timeout = TimeSpan.FromSeconds(30)
+                    });
+            }
+
+            var closestMonkey = monkeys.OrderBy(m => location.CalculateDistance(
+                new Location(m.Latitude, m.Longitude), DistanceUnits.Miles))
+                .FirstOrDefault();
+
+            var closestMonkeyMessage = closestMonkey is not null
+                ? $"{closestMonkey.Name} is closest, this monkey is in {closestMonkey.Location}"
+                : "The closest monkey could not be determined!";
+
+            await ((Application)App).Windows[0].Page!.DisplayAlert("Closest Monkey", closestMonkeyMessage, "OK");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Unable to query location: {ex.Message}");
+            await ((Application)App).Windows[0].Page!.DisplayAlert("Error!", ex.Message, "OK");
+        }
+    }
+
+    private void GoToDetails(Monkey monkey)
+    {
+        NavManager.NavigateTo($"details/{monkey.Name}");
+    }
+}

@@ -1,0 +1,80 @@
+﻿@page "/"
+@page "/login"
+@layout Layout.AuthLayout
+@implements IDisposable
+@inject NavigationManager NavManager
+@inject AuthStateContainer AuthState
+
+<div class="auth-page">
+    <div class="auth-header">
+        <div class="brand-box">🪐</div>
+        <h1>Chào mừng trở lại!</h1>
+        <p class="subtitle">Vui lòng đăng nhập để tiếp tục</p>
+    </div>
+
+    <div class="auth-card">
+        <div class="tabs">
+            <button class="tab active" type="button">Đăng nhập</button>
+            <button class="tab" type="button" @onclick="GoRegister">Đăng ký</button>
+        </div>
+
+        <EditForm Model="AuthState.LoginModel" OnValidSubmit="HandleLoginAsync">
+            <DataAnnotationsValidator />
+
+            <label>Email</label>
+            <div class="input-wrap">
+                <span class="left-icon">✉</span>
+                <InputText class="input" @bind-Value="AuthState.LoginModel.Email" placeholder="nam@example.com" />
+            </div>
+            <ValidationMessage For="() => AuthState.LoginModel.Email" class="validation" />
+
+            <div class="row-between">
+                <label>Mật khẩu</label>
+                <button class="text-btn" type="button" @onclick="ForgotPasswordAsync">Quên mật khẩu?</button>
+            </div>
+            <div class="input-wrap password-wrap">
+                <span class="left-icon">🔒</span>
+                <InputText class="input" type="@(AuthState.ShowPassword ? "text" : "password")" @bind-Value="AuthState.LoginModel.Password" placeholder="••••••••" />
+                <button class="eye" type="button" @onclick="AuthState.TogglePassword">👁</button>
+            </div>
+            <ValidationMessage For="() => AuthState.LoginModel.Password" class="validation" />
+
+            <button class="primary-btn" type="submit" disabled="@AuthState.IsBusy">@(AuthState.IsBusy ? "Đang xử lý..." : "Đăng Nhập")</button>
+        </EditForm>
+
+        <div class="divider"><span>Hoặc tiếp tục với</span></div>
+
+        <div class="social-grid">
+            <button type="button" class="social-btn">Google</button>
+            <button type="button" class="social-btn">Facebook</button>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(AuthState.StatusMessage))
+        {
+            <p class="status @(AuthState.IsError ? "error" : "success")">@AuthState.StatusMessage</p>
+        }
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        AuthState.ClearStatus();
+        AuthState.OnChange += StateHasChanged;
+    }
+
+    private Task HandleLoginAsync() => AuthState.LoginAsync();
+
+    private Task ForgotPasswordAsync()
+    {
+        AuthState.SetStatus("Tính năng quên mật khẩu đang phát triển.", false);
+        return Task.CompletedTask;
+    }
+
+    private void GoRegister() => NavManager.NavigateTo("/register");
+
+    public void Dispose()
+    {
+        AuthState.OnChange -= StateHasChanged;
+    }
+}
