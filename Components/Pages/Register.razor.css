@@ -4,111 +4,150 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 38px 24px;
+    justify-content: flex-start;
+    padding: 36px 22px 28px;
     color: #0f172a;
+    font-family: "Segoe UI", Inter, Roboto, Arial, sans-serif;
+}
+
+.auth-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 18px;
 }
 
 .brand-box {
-    width: 72px;
-    height: 72px;
-    border-radius: 18px;
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
     background: #dbeafe;
     color: #2563eb;
     display: grid;
     place-items: center;
-    font-size: 34px;
-    margin-bottom: 18px;
+    font-size: 24px;
+    margin-bottom: 14px;
 }
 
 .auth-page h1 {
     margin: 0;
-    font-size: 48px;
+    font-size: 28px;
     font-weight: 800;
+    line-height: 1.2;
+    color: #0b1c3f;
 }
 
 .subtitle {
-    margin: 10px 0 26px;
+    margin: 8px 0 0;
     color: #64748b;
-    font-size: 28px;
+    font-size: 14px;
+    line-height: 1.35;
 }
 
 .auth-card {
-    width: min(720px, 100%);
-    background: #fff;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    padding: 12px 12px 20px;
+    width: min(520px, 100%);
+    background: #f8fafc;
+    border-radius: 14px;
+    border: 1px solid #dbe2ea;
+    padding: 8px 10px 14px;
 }
 
 .tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    background: #eef2f7;
-    border-radius: 14px;
-    padding: 4px;
-    margin-bottom: 18px;
+    gap: 4px;
+    background: #e6ebf1;
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 14px;
 }
 
 .tab {
     border: 0;
-    border-radius: 10px;
+    border-radius: 8px;
     background: transparent;
-    color: #64748b;
+    color: #6b7280;
     font-weight: 700;
-    padding: 12px;
-    font-size: 30px;
+    padding: 10px 8px;
+    font-size: 20px;
 }
 
 .tab.active {
-    background: #fff;
+    background: #ffffff;
     color: #2563eb;
 }
 
 .auth-page label {
     display: block;
-    margin: 12px 0 8px;
-    font-size: 32px;
-    font-weight: 600;
+    margin: 10px 0 6px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.left-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 14px;
+    z-index: 1;
 }
 
 .auth-page ::deep .input {
     width: 100%;
-    border: 1px solid #cbd5e1;
-    border-radius: 14px;
-    padding: 14px 16px;
-    font-size: 28px;
-    background: #f8fafc;
+    border: 1px solid #cfd8e3;
+    border-radius: 11px;
+    padding: 11px 12px 11px 34px;
+    font-size: 14px;
+    color: #334155;
+    background: #f3f6fa;
     box-sizing: border-box;
+    outline: none;
 }
 
-.password-wrap {
-    position: relative;
+.auth-page ::deep .input:focus {
+    border-color: #8fb3ff;
+    background: #ffffff;
 }
 
 .password-wrap ::deep .input {
-    padding-right: 60px;
+    padding-right: 40px;
 }
 
 .eye {
     position: absolute;
-    right: 16px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     border: 0;
     background: transparent;
-    font-size: 24px;
+    color: #94a3b8;
+    font-size: 14px;
+    padding: 0;
+}
+
+.password-hint {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 12px;
 }
 
 .primary-btn {
     width: 100%;
-    margin-top: 18px;
+    margin-top: 14px;
     border: 0;
-    border-radius: 14px;
+    border-radius: 11px;
     background: #0f172a;
     color: #fff;
-    padding: 14px;
-    font-size: 34px;
+    padding: 12px;
+    font-size: 18px;
     font-weight: 700;
 }
 
@@ -119,8 +158,9 @@
 .policy {
     text-align: center;
     color: #64748b;
-    font-size: 24px;
-    margin-top: 16px;
+    font-size: 14px;
+    margin-top: 14px;
+    line-height: 1.45;
 }
 
 .policy span {
@@ -129,14 +169,15 @@
 
 .auth-page ::deep .validation {
     color: #b91c1c;
-    font-size: 20px;
+    font-size: 12px;
+    margin-top: 4px;
 }
 
 .status {
-    margin: 16px 4px 0;
-    padding: 10px;
-    border-radius: 12px;
-    font-size: 22px;
+    margin: 12px 2px 0;
+    padding: 8px 10px;
+    border-radius: 10px;
+    font-size: 12px;
 }
 
 .status.success {

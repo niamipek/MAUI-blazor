@@ -1,7 +1,18 @@
 ﻿@page "/details"
+@page "/details/{Name}"
 
-<p>Placeholder page for Monkey Details</p>
+<h3>Monkey Details</h3>
+
+@if (string.IsNullOrWhiteSpace(Name))
+{
+    <p>Không có monkey nào được chọn.</p>
+}
+else
+{
+    <p>Bạn đang xem: <strong>@Name</strong></p>
+}
 
 @code {
-
+    [Parameter]
+    public string? Name { get; set; }
 }

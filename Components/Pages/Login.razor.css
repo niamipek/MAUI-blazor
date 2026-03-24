@@ -46,7 +46,8 @@
 }
 
 .auth-card {
-    width: min(430px, 100%);
+    width: min(520px, 100%);
+    min-height: 640px;
     background: #f8fafc;
     border-radius: 14px;
     border: 1px solid #dbe2ea;

@@ -7,7 +7,8 @@ public sealed class AuthStateContainer(IAuthService authService, ILogger<AuthSta
     public LoginInputModel LoginModel { get; } = new();
     public RegisterInputModel RegisterModel { get; } = new();
 
-    public bool ShowPassword { get; private set; }
+    public bool ShowLoginPassword { get; private set; }
+    public bool ShowRegisterPassword { get; private set; }
     public bool IsBusy { get; private set; }
     public string StatusMessage { get; private set; } = string.Empty;
     public bool IsError { get; private set; }
@@ -63,9 +64,15 @@ public sealed class AuthStateContainer(IAuthService authService, ILogger<AuthSta
         }
     }
 
-    public void TogglePassword()
+    public void ToggleLoginPassword()
     {
-        ShowPassword = !ShowPassword;
+        ShowLoginPassword = !ShowLoginPassword;
+        NotifyStateChanged();
+    }
+
+    public void ToggleRegisterPassword()
+    {
+        ShowRegisterPassword = !ShowRegisterPassword;
         NotifyStateChanged();
     }
 

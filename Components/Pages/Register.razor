@@ -1,43 +1,54 @@
-@page "/register"
+﻿@page "/register"
 @layout Layout.AuthLayout
 @implements IDisposable
 @inject NavigationManager NavManager
 @inject AuthStateContainer AuthState
 
 <div class="auth-page">
-    <div class="brand-box">??</div>
-    <h1>T?o t�i kho?n m?i</h1>
-    <p class="subtitle">B?t ??u h�nh tr�nh c?a b?n v?i ch�ng t�i</p>
+    
 
     <div class="auth-card">
+        <div class="auth-header">
+            <div class="brand-box">🪐</div>
+            <h1>Tạo tài khoản mới</h1>
+            <p class="subtitle">Bắt đầu hành trình của bạn với chúng tôi</p>
+        </div>
         <div class="tabs">
-            <button class="tab" type="button" @onclick="GoLogin">??ng nh?p</button>
-            <button class="tab active" type="button">??ng k�</button>
+            <button class="tab" type="button" @onclick="GoLogin">Đăng nhập</button>
+            <button class="tab active" type="button">Đăng ký</button>
         </div>
 
         <EditForm Model="AuthState.RegisterModel" OnValidSubmit="HandleRegisterAsync">
             <DataAnnotationsValidator />
 
-            <label>H? v� t�n</label>
-            <InputText class="input" @bind-Value="AuthState.RegisterModel.FullName" placeholder="Nguy?n V?n A" />
+            <label>Họ và tên</label>
+            <div class="input-wrap">
+                <span class="left-icon">👤</span>
+                <InputText class="input" @bind-Value="AuthState.RegisterModel.FullName" placeholder="Nguyễn Văn A" />
+            </div>
             <ValidationMessage For="() => AuthState.RegisterModel.FullName" class="validation" />
 
             <label>Email</label>
-            <InputText class="input" @bind-Value="AuthState.RegisterModel.Email" placeholder="nam@example.com" />
+            <div class="input-wrap">
+                <span class="left-icon">✉</span>
+                <InputText class="input" @bind-Value="AuthState.RegisterModel.Email" placeholder="nam@example.com" />
+            </div>
             <ValidationMessage For="() => AuthState.RegisterModel.Email" class="validation" />
 
-            <label>M?t kh?u</label>
-            <div class="password-wrap">
-                <InputText class="input" type="@(AuthState.ShowPassword ? "text" : "password")" @bind-Value="AuthState.RegisterModel.Password" placeholder="T?o m?t kh?u (�t nh?t 8 k� t?)" />
-                <button class="eye" type="button" @onclick="AuthState.TogglePassword">??</button>
+            <label>Mật khẩu</label>
+            <div class="input-wrap password-wrap">
+                <span class="left-icon">🔒</span>
+                <InputText class="input" type="@(AuthState.ShowRegisterPassword ? "text" : "password")" @bind-Value="AuthState.RegisterModel.Password" placeholder="Tạo mật khẩu (ít nhất 8 ký tự)" />
+                <button class="eye" type="button" @onclick="AuthState.ToggleRegisterPassword">👁</button>
             </div>
+            <p class="password-hint">ⓘ Mật khẩu phải có ít nhất 8 ký tự.</p>
             <ValidationMessage For="() => AuthState.RegisterModel.Password" class="validation" />
 
-            <button class="primary-btn" type="submit" disabled="@AuthState.IsBusy">@(AuthState.IsBusy ? "?ang x? l�..." : "T?o T�i Kho?n")</button>
+            <button class="primary-btn" type="submit" disabled="@AuthState.IsBusy">@(AuthState.IsBusy ? "Đang xử lý..." : "Tạo Tài Khoản")</button>
         </EditForm>
 
         <p class="policy">
-            B?ng vi?c ??ng k�, b?n ??ng � v?i <span>?i?u kho?n</span> v� <span>Ch�nh s�ch b?o m?t</span> c?a ch�ng t�i.
+            Bằng việc đăng ký, bạn đồng ý với <span>Điều khoản</span> và <span>Chính sách bảo mật</span> của chúng tôi.
         </p>
 
         @if (!string.IsNullOrWhiteSpace(AuthState.StatusMessage))

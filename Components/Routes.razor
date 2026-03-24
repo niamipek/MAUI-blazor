@@ -1,6 +1,41 @@
-﻿<Router AppAssembly="@typeof(MauiProgram).Assembly">
+﻿@implements IDisposable
+@inject NavigationManager NavManager
+
+<Router AppAssembly="@typeof(MauiProgram).Assembly">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
 </Router>
+
+@* ROUTE DEBUG BADGE: có thể comment cả khối này khi không cần *@
+<div style="position:fixed;top:8px;right:8px;z-index:2147483647;background:#111;color:#00ff88;padding:8px 10px;border:2px solid #00ff88;border-radius:8px;font-size:12px;font-weight:700;max-width:92vw;word-break:break-all;pointer-events:none;">
+    Route: @CurrentRoute
+</div>
+
+@code {
+    private string CurrentRoute = "/";
+
+    protected override void OnInitialized()
+    {
+        UpdateRoute();
+        NavManager.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        UpdateRoute();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdateRoute()
+    {
+        var relative = NavManager.ToBaseRelativePath(NavManager.Uri);
+        CurrentRoute = string.IsNullOrWhiteSpace(relative) ? "/" : $"/{relative}";
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= OnLocationChanged;
+    }
+}

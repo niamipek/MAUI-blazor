@@ -1,18 +1,20 @@
 ﻿@page "/"
 @page "/login"
+@page "/user/login"
 @layout Layout.AuthLayout
 @implements IDisposable
 @inject NavigationManager NavManager
 @inject AuthStateContainer AuthState
 
 <div class="auth-page">
-    <div class="auth-header">
-        <div class="brand-box">🪐</div>
-        <h1>Chào mừng trở lại!</h1>
-        <p class="subtitle">Vui lòng đăng nhập để tiếp tục</p>
-    </div>
+    
 
     <div class="auth-card">
+        <div class="auth-header">
+            <div class="brand-box">🪐</div>
+            <h1>Chào mừng trở lại!</h1>
+            <p class="subtitle">Vui lòng đăng nhập để tiếp tục</p>
+        </div>
         <div class="tabs">
             <button class="tab active" type="button">Đăng nhập</button>
             <button class="tab" type="button" @onclick="GoRegister">Đăng ký</button>
@@ -34,8 +36,8 @@
             </div>
             <div class="input-wrap password-wrap">
                 <span class="left-icon">🔒</span>
-                <InputText class="input" type="@(AuthState.ShowPassword ? "text" : "password")" @bind-Value="AuthState.LoginModel.Password" placeholder="••••••••" />
-                <button class="eye" type="button" @onclick="AuthState.TogglePassword">👁</button>
+                <InputText class="input" type="@(AuthState.ShowLoginPassword ? "text" : "password")" @bind-Value="AuthState.LoginModel.Password" placeholder="••••••••" />
+                <button class="eye" type="button" @onclick="AuthState.ToggleLoginPassword">👁</button>
             </div>
             <ValidationMessage For="() => AuthState.LoginModel.Password" class="validation" />
 
